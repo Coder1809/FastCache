@@ -1,0 +1,13 @@
+# Build output
+build/
+.cache/
+web/dist/
+web/node_modules/
+node_modules/
+
+# IDE
+.vscode/
+*.swp
+
+# OS
+.DS_Store
