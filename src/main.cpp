@@ -12,7 +12,7 @@ static void print_help() {
               << "  GET <key>                       — Retrieve value by key\n"
               << "  DEL <key>                       — Delete a key\n"
               << "  STATS                           — Show cache statistics\n"
-              << "  PURGE                           — Remove all expired keys\n"
+              << "  CLEAN                           — Remove all expired keys\n"
               << "  HELP                            — Show this help\n"
               << "  QUIT                            — Exit\n\n";
 }
@@ -85,9 +85,9 @@ int main() {
                       << "  Hits:     " << cache.hits() << "\n"
                       << "  Misses:   " << cache.misses() << "\n";
         }
-        else if (cmd == "PURGE") {
+        else if (cmd == "CLEAN" || cmd == "PURGE" || cmd == "REMOVE-EXPIRED") {
             auto n = cache.purge_expired();
-            std::cout << "Purged " << n << " expired entries\n";
+            std::cout << "Removed " << n << " expired entries\n";
         }
         else if (cmd == "HELP") {
             print_help();
