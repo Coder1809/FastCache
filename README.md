@@ -2,6 +2,9 @@
 
 A high-performance in-memory key-value caching engine built in **C++17** with **O(1)** get/set/delete operations, LRU eviction, and TTL key expiration, paired with an interactive **React Web Visualizer**.
 
+### 🌐 Live Demo
+**Website:** [fast-cache-gjnba2a15-me-b39d.vercel.app](https://fast-cache-gjnba2a15-me-b39d.vercel.app)
+
 ---
 
 ## 🌟 Key Features
@@ -12,13 +15,13 @@ A high-performance in-memory key-value caching engine built in **C++17** with **
 - **Thread-Safe Concurrency** — `std::mutex` and `std::lock_guard` protect cache operations from race conditions.
 - **Dual Interfaces:**
   - **Interactive C++ CLI REPL** for terminal power-users.
-  - **Interactive React Web Visualizer** to inspect Hash Map indexes, Doubly Linked List node reordering, hit/miss ratios, and live TTL countdowns.
+  - **Interactive React Web Visualizer** to inspect cache ordering, eviction lifecycles, and live TTL countdowns in real-time.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Core Engine:** C++17, Data Structures (LRU), `std::mutex`, CMake 3.16+
+- **Core Engine:** C++17, Multithreading (`std::mutex`), CMake 3.16+
 - **Web Visualizer:** React 18, Vite, Lucide Icons, Modern CSS
 
 ---
@@ -115,7 +118,7 @@ npm run dev
 | **SET** | O(1) | O(1) |
 | **DEL** | O(1) | O(1) |
 | **LRU Eviction** | O(1) | O(1) |
-| **TTL Purge** | O(N) | O(1) |
+| **TTL Clean** | O(N) | O(1) |
 
 ---
 
