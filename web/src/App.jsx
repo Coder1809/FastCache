@@ -267,106 +267,68 @@ export default function App() {
         )}
       </div>
 
-      {/* Main Visualizer Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', marginBottom: '24px' }}>
-        
-        {/* Linked List Order View */}
-        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '20px', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Layers size={16} color="#38bdf8" /> Cache Order (Most Recent ➔ Oldest)
-            </div>
-            <span style={{ fontSize: '11px', color: '#64748b' }}>MRU ➔ LRU</span>
+      {/* Cache Order (Main Visualizer) */}
+      <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '20px', borderRadius: '8px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+          <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Layers size={16} color="#38bdf8" /> Cache Order (Most Recent ➔ Oldest)
           </div>
+          <span style={{ fontSize: '12px', color: '#64748b' }}>MRU (Top) ➔ LRU (Bottom)</span>
+        </div>
 
-          {entries.length === 0 ? (
-            <div style={{ padding: '32px', textAlign: 'center', color: '#64748b', fontSize: '13px', border: '1px dashed #334155', borderRadius: '6px' }}>
-              Cache is empty. Use the form above to add your first key-value pair.
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {entries.map((item, idx) => (
-                <div 
-                  key={item.key} 
-                  style={{ 
-                    background: idx === 0 ? '#1e293b' : idx === entries.length - 1 && entries.length >= capacity ? '#451a03' : '#111827',
-                    border: idx === 0 ? '1px solid #38bdf8' : idx === entries.length - 1 && entries.length >= capacity ? '1px solid #b45309' : '1px solid #1f2937',
-                    padding: '12px',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '4px', background: idx === 0 ? '#0284c7' : idx === entries.length - 1 && entries.length >= capacity ? '#d97706' : '#334155', color: '#ffffff' }}>
-                        {idx === 0 ? 'MOST RECENT' : idx === entries.length - 1 ? 'OLDEST (LRU)' : `#${idx + 1}`}
-                      </span>
-                      <span style={{ fontWeight: '600', fontSize: '14px', fontFamily: 'monospace', color: '#f8fafc' }}>
-                        {item.key}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px', fontFamily: 'monospace' }}>
-                      value: <span style={{ color: '#e2e8f0' }}>"{item.value}"</span>
-                    </div>
+        {entries.length === 0 ? (
+          <div style={{ padding: '36px', textAlign: 'center', color: '#64748b', fontSize: '13px', border: '1px dashed #334155', borderRadius: '6px' }}>
+            Cache is empty. Use the form above to add your first key-value pair.
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {entries.map((item, idx) => (
+              <div 
+                key={item.key} 
+                style={{ 
+                  background: idx === 0 ? '#1e293b' : idx === entries.length - 1 && entries.length >= capacity ? '#451a03' : '#111827',
+                  border: idx === 0 ? '1px solid #38bdf8' : idx === entries.length - 1 && entries.length >= capacity ? '1px solid #b45309' : '1px solid #1f2937',
+                  padding: '14px 16px',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '10px', fontWeight: '700', padding: '3px 8px', borderRadius: '4px', background: idx === 0 ? '#0284c7' : idx === entries.length - 1 && entries.length >= capacity ? '#d97706' : '#334155', color: '#ffffff' }}>
+                      {idx === 0 ? 'MOST RECENT' : idx === entries.length - 1 ? 'OLDEST (LRU)' : `#${idx + 1}`}
+                    </span>
+                    <span style={{ fontWeight: '600', fontSize: '15px', fontFamily: 'monospace', color: '#f8fafc' }}>
+                      {item.key}
+                    </span>
                   </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {item.ttlSeconds !== null && (
-                      <span style={{ fontSize: '11px', color: item.ttlSeconds <= 5 ? '#f87171' : '#38bdf8', background: '#0f172a', padding: '3px 6px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Clock size={12} /> {item.ttlSeconds}s left
-                      </span>
-                    )}
-                    <button 
-                      onClick={() => handleGet(item.key)}
-                      style={{ fontSize: '11px', background: '#0284c7', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
-                      Get
-                    </button>
-                    <button 
-                      onClick={() => handleDel(item.key)}
-                      style={{ fontSize: '11px', background: '#dc2626', color: '#fff', border: 'none', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
-                      <Trash2 size={12} />
-                    </button>
+                  <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '6px', fontFamily: 'monospace' }}>
+                    value: <span style={{ color: '#e2e8f0', fontWeight: '500' }}>"{item.value}"</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
 
-        {/* Key-Value Lookup Table */}
-        <div style={{ background: '#0f172a', border: '1px solid #1e293b', padding: '20px', borderRadius: '8px' }}>
-          <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-            <Database size={16} color="#38bdf8" /> Key-Value Map Index (<span style={{ fontFamily: 'monospace' }}>std::unordered_map</span>)
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {item.ttlSeconds !== null && (
+                    <span style={{ fontSize: '12px', color: item.ttlSeconds <= 5 ? '#f87171' : '#38bdf8', background: '#0f172a', padding: '4px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Clock size={13} /> {item.ttlSeconds}s left
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => handleGet(item.key)}
+                    style={{ fontSize: '12px', background: '#0284c7', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', fontWeight: '500' }}>
+                    Get
+                  </button>
+                  <button 
+                    onClick={() => handleDel(item.key)}
+                    style={{ fontSize: '12px', background: '#dc2626', color: '#fff', border: 'none', padding: '6px 10px', borderRadius: '4px', cursor: 'pointer' }}>
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid #334155', color: '#94a3b8' }}>
-                <th style={{ padding: '8px 4px' }}>Key</th>
-                <th style={{ padding: '8px 4px' }}>Memory Pointer</th>
-                <th style={{ padding: '8px 4px' }}>Lookup Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.length === 0 ? (
-                <tr>
-                  <td colSpan="3" style={{ padding: '24px 0', textAlign: 'center', color: '#64748b' }}>
-                    Map is currently empty.
-                  </td>
-                </tr>
-              ) : (
-                entries.map(item => (
-                  <tr key={item.key} style={{ borderBottom: '1px solid #1e293b' }}>
-                    <td style={{ padding: '8px 4px', fontFamily: 'monospace', color: '#38bdf8' }}>"{item.key}"</td>
-                    <td style={{ padding: '8px 4px', fontFamily: 'monospace', color: '#a855f7' }}>0x{(item.key.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) * 16384).toString(16)}</td>
-                    <td style={{ padding: '8px 4px', color: '#22c55e', fontWeight: '600' }}>O(1)</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        )}
       </div>
 
       {/* Activity Log */}
