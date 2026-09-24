@@ -11,7 +11,9 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
-  Info
+  Info,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export default function App() {
@@ -25,6 +27,20 @@ export default function App() {
   const [logs, setLogs] = useState([]);
   const [lookupResult, setLookupResult] = useState(null);
   const logEndRef = useRef(null);
+
+  // Theme state: defaults to dark developer theme, with light theme toggle
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('fc_theme') || 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('fc_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const refreshState = () => {
     setEntries(engine.getEntries());
@@ -204,6 +220,26 @@ export default function App() {
             <p className="fc-subtitle">In-memory key-value cache</p>
           </div>
         </div>
+
+        <div className="fc-header-right">
+          <button 
+            type="button" 
+            onClick={toggleTheme}
+            className="fc-theme-toggle-btn"
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
+            {theme === 'dark' ? (
+              <>
+                <Sun size={13} />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon size={13} />
+                <span>Dark</span>
+              </>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Main Two-Column Layout: CACHE CONTROLS & CACHE STATUS */}
@@ -216,17 +252,50 @@ export default function App() {
               <span>Cache Controls</span>
             </div>
 
+            {/* Stepper Number for Capacity (Replaces rolldown spinner) */}
             <div className="fc-capacity-control">
-              <label htmlFor="capacity-input" className="fc-cap-label">Max Capacity:</label>
-              <input 
-                id="capacity-input"
-                type="number" 
-                min="1" 
-                max="20" 
-                value={capacity} 
-                onChange={(e) => handleCapacityChange(e.target.value)}
-                className="fc-cap-input"
-              />
+              <span className="fc-cap-label">Capacity:</span>
+              <div className="fc-capacity-stepper">
+                <button 
+                  type="button"
+                  onClick={() => handleCapacityChange(capacity - 1)}
+                  disabled={capacity <= 1}
+                  className="fc-step-btn"
+                  title="Decrease capacity">
+                  −
+                </button>
+                <input 
+                  id="capacity-input"
+                  type="number" 
+                  min="1" 
+                  max="50" 
+                  value={capacity} 
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === '') {
+                      setCapacity('');
+                      return;
+                    }
+                    const n = parseInt(v, 10);
+                    if (!isNaN(n) && n >= 1) {
+                      handleCapacityChange(n);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (!capacity || capacity < 1) handleCapacityChange(5);
+                  }}
+                  className="fc-cap-input font-mono"
+                  title="Cache capacity limit"
+                />
+                <button 
+                  type="button"
+                  onClick={() => handleCapacityChange(Number(capacity || 0) + 1)}
+                  disabled={capacity >= 50}
+                  className="fc-step-btn"
+                  title="Increase capacity">
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
@@ -262,8 +331,8 @@ export default function App() {
                 <label className="fc-label">TTL (Seconds)</label>
                 <input 
                   type="number" 
-                  min="1"
-                  placeholder="Expire after (seconds)" 
+                  min="1" 
+                  placeholder="e.g. 60" 
                   value={ttl}
                   onChange={(e) => setTtl(e.target.value)}
                   className="fc-input font-mono"

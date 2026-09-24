@@ -1,38 +1,73 @@
-:root {
-  --bg-page: #f6f8fa;
-  --bg-panel: #ffffff;
-  --bg-subtle: #f1f5f9;
-  --bg-muted: #f8fafc;
-  --border-color: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
+/* Theme System: Dark (Default) & Light */
+:root, [data-theme="dark"] {
+  --bg-page: #0b0f17;
+  --bg-panel: #131a24;
+  --bg-subtle: #1c2636;
+  --bg-muted: #17202d;
+  --border-color: #243042;
+  --border-strong: #36465d;
+  --text-primary: #e6edf3;
+  --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-light: #94a3b8;
+  --text-light: #475569;
   
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-accent-subtle: #eff6ff;
-  --color-accent-border: #bfdbfe;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-subtle: rgba(59, 130, 246, 0.12);
+  --color-accent-border: #1d4ed8;
   
-  --color-success: #15803d;
-  --color-success-bg: #f0fdf4;
-  --color-success-border: #bbf7d0;
+  --color-success: #22c55e;
+  --color-success-bg: rgba(34, 197, 94, 0.12);
+  --color-success-border: rgba(34, 197, 94, 0.35);
   
-  --color-warning: #b45309;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #fde68a;
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-warning-border: rgba(245, 158, 11, 0.35);
   
-  --color-danger: #dc2626;
-  --color-danger-bg: #fef2f2;
-  --color-danger-border: #fecaca;
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.12);
+  --color-danger-border: rgba(239, 68, 68, 0.35);
 
+  --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] {
+  --bg-page: #f0f2f5;
+  --bg-panel: #ffffff;
+  --bg-subtle: #e5e9ee;
+  --bg-muted: #f6f8fa;
+  --border-color: #d0d7de;
+  --border-strong: #afb8c1;
+  --text-primary: #1f2328;
+  --text-secondary: #57606a;
+  --text-muted: #656d76;
+  --text-light: #8c959f;
+  
+  --color-accent: #0969da;
+  --color-accent-hover: #0856b3;
+  --color-accent-subtle: #ebf5ff;
+  --color-accent-border: #99c8ff;
+  
+  --color-success: #1a7f37;
+  --color-success-bg: #dafbe1;
+  --color-success-border: #aceebb;
+  
+  --color-warning: #9a6700;
+  --color-warning-bg: #fff8c5;
+  --color-warning-border: #f1e05a;
+  
+  --color-danger: #cf222e;
+  --color-danger-bg: #ffebe9;
+  --color-danger-border: #ffc1ba;
+
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+:root {
   --radius-xs: 3px;
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
-
-  --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
 
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -52,10 +87,21 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .font-mono {
   font-family: var(--font-mono);
+}
+
+/* Remove rolldown spin buttons across all number inputs */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 /* App Shell */
@@ -73,6 +119,8 @@ body {
   padding-bottom: 16px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .fc-header-left {
@@ -85,8 +133,9 @@ body {
   width: 30px;
   height: 30px;
   border-radius: var(--radius-sm);
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,15 +180,43 @@ body {
   margin-top: 2px;
 }
 
+.fc-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fc-theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fc-theme-toggle-btn:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
 /* Two-Column Grid: Controls & Status */
 .fc-grid-two-col {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1.35fr 1fr;
   gap: 18px;
   margin-bottom: 20px;
 }
 
-/* Common Panel Styling */
+/* Common Panel */
 .fc-panel {
   background: var(--bg-panel);
   border: 1px solid var(--border-color);
@@ -173,11 +250,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* Cache Controls Form */
-.fc-form {
-  padding: 16px;
-}
-
+/* Capacity Stepper (Number instead of rolldown) */
 .fc-capacity-control {
   display: flex;
   align-items: center;
@@ -190,13 +263,50 @@ body {
   font-weight: 500;
 }
 
-.fc-cap-input {
-  width: 52px;
-  padding: 3px 6px;
-  font-size: 12px;
-  font-family: var(--font-mono);
+.fc-capacity-stepper {
+  display: inline-flex;
+  align-items: center;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xs);
+  background: var(--bg-subtle);
+  overflow: hidden;
+}
+
+.fc-step-btn {
+  width: 24px;
+  height: 24px;
+  background: var(--bg-muted);
+  border: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.fc-step-btn:hover:not(:disabled) {
+  background: var(--border-color);
+}
+
+.fc-step-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.fc-cap-input {
+  width: 40px;
+  height: 24px;
+  padding: 0 4px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  border: none;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
   background: var(--bg-panel);
   color: var(--text-primary);
   text-align: center;
@@ -204,7 +314,12 @@ body {
 
 .fc-cap-input:focus {
   outline: none;
-  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+/* Cache Controls Form */
+.fc-form {
+  padding: 16px;
 }
 
 .fc-form-grid {
@@ -234,7 +349,7 @@ body {
   font-size: 13px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  background-color: var(--bg-panel);
+  background-color: var(--bg-subtle);
   color: var(--text-primary);
   transition: border-color 0.15s ease;
 }
@@ -302,13 +417,13 @@ body {
 }
 
 .fc-btn-secondary {
-  background-color: var(--bg-panel);
+  background-color: var(--bg-subtle);
   color: var(--text-primary);
-  border-color: var(--border-strong);
+  border-color: var(--border-color);
 }
 
 .fc-btn-secondary:hover {
-  background-color: var(--bg-subtle);
+  background-color: var(--border-color);
 }
 
 .fc-btn-danger {
@@ -332,7 +447,7 @@ body {
   color: var(--text-primary);
 }
 
-/* Inline Feedback */
+/* Feedback Status Banner */
 .fc-status-banner {
   margin: 10px 16px 16px;
   padding: 8px 12px;
@@ -554,14 +669,14 @@ body {
   padding: 2px 7px;
   border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
-  background: var(--bg-panel);
+  background: var(--bg-subtle);
   color: var(--text-secondary);
   cursor: pointer;
   line-height: 1.2;
 }
 
 .fc-node-btn:hover {
-  background: var(--bg-subtle);
+  background: var(--border-color);
   color: var(--color-accent);
   border-color: var(--color-accent-border);
 }
