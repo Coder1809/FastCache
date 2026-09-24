@@ -3,13 +3,11 @@ import { LRUCacheEngine } from './core/LRUCacheEngine';
 import { 
   Database, 
   Sliders, 
-  Activity, 
   Clock, 
   Trash2, 
   Search, 
   Plus, 
   RotateCcw,
-  ArrowRight,
   CheckCircle2,
   XCircle,
   AlertTriangle,
@@ -44,9 +42,9 @@ export default function App() {
 
   useEffect(() => {
     refreshState();
-    addLog('SYSTEM', 'engine', 'FastCache C++17 initialized with capacity = 5', 'sys');
+    addLog('SYSTEM', 'engine', 'FastCache engine ready (Max capacity: 5 items)', 'sys');
 
-    // Periodic timer to tick down active TTL values
+    // Timer to update remaining TTL seconds
     const interval = setInterval(() => {
       setEntries(engine.getEntries());
     }, 1000);
@@ -67,8 +65,8 @@ export default function App() {
     setCapacity(val);
     const evicted = engine.setCapacity(val);
     if (evicted.length > 0) {
-      addLog('CAPACITY', `${val}`, `Resized capacity to ${val}; evicted ${evicted.length} oldest: [${evicted.map(n => n.key).join(', ')}]`, 'evict');
-      setLookupResult({ type: 'warning', text: `Capacity reduced to ${val}. Evicted ${evicted.length} LRU item(s).` });
+      addLog('CAPACITY', `${val}`, `Capacity set to ${val}. Removed ${evicted.length} oldest items: [${evicted.map(n => n.key).join(', ')}]`, 'evict');
+      setLookupResult({ type: 'warning', text: `Capacity set to ${val}. Removed ${evicted.length} oldest item(s)` });
     } else {
       addLog('CAPACITY', `${val}`, `Capacity updated to ${val}`, 'sys');
     }
@@ -85,15 +83,14 @@ export default function App() {
     const res = engine.set(cleanKey, cleanVal, ttlNum);
 
     if (res.isUpdate) {
-      addLog('SET', cleanKey, `Updated key "${cleanKey}" -> moved to MRU head`, 'set');
-      setLookupResult({ type: 'success', text: `SET: Updated "${cleanKey}" = "${cleanVal}" (promoted to MRU)` });
+      addLog('SET', cleanKey, `Updated key "${cleanKey}" (moved to most recent position)`, 'set');
+      setLookupResult({ type: 'success', text: `Saved "${cleanKey}" = "${cleanVal}"` });
     } else if (res.evicted) {
-      addLog('EVICT', res.evicted.key, `Evicted oldest LRU key "${res.evicted.key}" to make room for "${cleanKey}"`, 'evict');
-      addLog('SET', cleanKey, `Inserted "${cleanKey}" = "${cleanVal}" at MRU head`, 'set');
-      setLookupResult({ type: 'warning', text: `SET: Inserted "${cleanKey}". Evicted LRU key "${res.evicted.key}"` });
+      addLog('SET', cleanKey, `Added "${cleanKey}". Cache was full -> Removed oldest key "${res.evicted.key}"`, 'evict');
+      setLookupResult({ type: 'warning', text: `Added "${cleanKey}". Cache full -> Removed "${res.evicted.key}"` });
     } else {
-      addLog('SET', cleanKey, `Stored "${cleanKey}" = "${cleanVal}"${ttlNum ? ` (TTL: ${ttlNum}s)` : ''}`, 'set');
-      setLookupResult({ type: 'success', text: `SET: Stored "${cleanKey}" = "${cleanVal}"` });
+      addLog('SET', cleanKey, `Added "${cleanKey}" to cache`, 'set');
+      setLookupResult({ type: 'success', text: `Saved "${cleanKey}" = "${cleanVal}"` });
     }
 
     setKey('');
@@ -108,14 +105,14 @@ export default function App() {
 
     const res = engine.get(targetKey);
     if (res.found) {
-      addLog('GET', targetKey, `Hit: retrieved "${res.value}" -> promoted to MRU head`, 'hit');
-      setLookupResult({ type: 'hit', text: `HIT: Found "${targetKey}" = "${res.value}" (promoted to MRU)` });
+      addLog('GET', targetKey, `Found "${targetKey}" = "${res.value}" (moved to most recent)`, 'hit');
+      setLookupResult({ type: 'hit', text: `Found: "${targetKey}" = "${res.value}"` });
     } else if (res.expired) {
-      addLog('EXPIRE', targetKey, `Miss: key expired and was removed from storage`, 'miss');
-      setLookupResult({ type: 'miss', text: `MISS: Key "${targetKey}" has expired (TTL elapsed)` });
+      addLog('GET', targetKey, `Key "${targetKey}" has expired and was removed`, 'miss');
+      setLookupResult({ type: 'miss', text: `Expired: "${targetKey}" timed out` });
     } else {
-      addLog('GET', targetKey, `Miss: key not found in cache`, 'miss');
-      setLookupResult({ type: 'miss', text: `MISS: Key "${targetKey}" does not exist in cache` });
+      addLog('GET', targetKey, `Key "${targetKey}" not found in cache`, 'miss');
+      setLookupResult({ type: 'miss', text: `Not Found: "${targetKey}" does not exist` });
     }
     refreshState();
   };
@@ -126,11 +123,11 @@ export default function App() {
 
     const removed = engine.del(k);
     if (removed) {
-      addLog('DELETE', k, `Deleted key "${k}" from cache`, 'del');
-      setLookupResult({ type: 'info', text: `DELETED: Removed "${k}" from cache` });
+      addLog('DELETE', k, `Removed key "${k}"`, 'del');
+      setLookupResult({ type: 'info', text: `Deleted "${k}"` });
     } else {
-      addLog('DELETE', k, `Delete failed: key "${k}" not found`, 'miss');
-      setLookupResult({ type: 'miss', text: `DELETE FAILED: Key "${k}" not found` });
+      addLog('DELETE', k, `Key "${k}" not found`, 'miss');
+      setLookupResult({ type: 'miss', text: `Delete failed: "${k}" not found` });
     }
     refreshState();
   };
@@ -138,37 +135,20 @@ export default function App() {
   const handleClearExpired = () => {
     const purged = engine.purgeExpired();
     if (purged.length > 0) {
-      addLog('PURGE', `${purged.length} keys`, `Purged expired keys: [${purged.join(', ')}]`, 'purge');
-      setLookupResult({ type: 'warning', text: `PURGED: Removed ${purged.length} expired item(s)` });
+      addLog('CLEANUP', `${purged.length} items`, `Removed ${purged.length} expired items: [${purged.join(', ')}]`, 'purge');
+      setLookupResult({ type: 'info', text: `Removed ${purged.length} expired items` });
     } else {
-      addLog('PURGE', '0 keys', 'Scan complete: no expired items found', 'sys');
-      setLookupResult({ type: 'info', text: `PURGE: No expired entries found` });
+      addLog('CLEANUP', '0 items', 'No expired items found', 'sys');
+      setLookupResult({ type: 'info', text: 'No expired items to remove' });
     }
     refreshState();
   };
 
   const handleClearAll = () => {
     engine.clear();
-    addLog('CLEAR', 'all', 'Flushed all entries; hit/miss metrics reset to 0', 'sys');
-    setLookupResult({ type: 'info', text: `CLEARED: Cache completely emptied` });
+    addLog('CLEAR', 'all', 'Cache emptied completely', 'sys');
+    setLookupResult(null);
     refreshState();
-  };
-
-  const loadPreset = (presetType) => {
-    if (presetType === 'user') {
-      engine.set('user_42', 'sasank_reddy', 60);
-      engine.set('user_18', 'alex_chen', 30);
-      engine.set('user_07', 'sarah_m', null);
-      addLog('SYSTEM', 'seed', 'Seeded sample user dataset (user_42, user_18, user_07)', 'set');
-    } else if (presetType === 'session') {
-      engine.set('sess_auth_901', 'token_xyz1', 15);
-      engine.set('sess_auth_902', 'token_xyz2', 45);
-      engine.set('sess_auth_903', 'token_xyz3', null);
-      engine.set('sess_auth_904', 'token_xyz4', 90);
-      addLog('SYSTEM', 'seed', 'Seeded active sessions dataset (4 keys)', 'set');
-    }
-    refreshState();
-    setLookupResult({ type: 'success', text: `Seeded test data into cache` });
   };
 
   const getStatusIcon = (type) => {
@@ -186,7 +166,7 @@ export default function App() {
     }
   };
 
-  const getOpBadgeClass = (status, action) => {
+  const getOpBadgeClass = (status) => {
     switch (status) {
       case 'hit':
         return 'fc-op-hit';
@@ -207,73 +187,28 @@ export default function App() {
     }
   };
 
-  const cacheUsagePercent = Math.min(100, Math.round((stats.size / (stats.capacity || 1)) * 100));
-
   return (
     <div className="fc-app">
       
-      {/* 1. Header */}
+      {/* Header */}
       <header className="fc-header">
         <div className="fc-header-left">
           <div className="fc-logo-mark">
-            <Database size={17} strokeWidth={2.2} />
+            <Database size={16} strokeWidth={2.2} />
           </div>
           <div className="fc-header-text">
             <div className="fc-title-row">
               <h1 className="fc-title">FastCache</h1>
               <span className="fc-badge-tech">C++17 Engine</span>
             </div>
-            <p className="fc-subtitle">In-memory key-value cache & memory visualizer</p>
-          </div>
-        </div>
-
-        <div className="fc-header-meta">
-          <div className="fc-meta-pill">
-            <span className="fc-meta-dot" />
-            <span>LRU Eviction</span>
-          </div>
-          <div className="fc-meta-pill">
-            <span>O(1) Hash Map + Doubly Linked List</span>
+            <p className="fc-subtitle">In-memory key-value cache</p>
           </div>
         </div>
       </header>
 
-      {/* 2. Statistics Strip (Replaces AI SaaS cards) */}
-      <div className="fc-stats-strip">
-        <div className="fc-stat-item">
-          <div className="fc-stat-label">Cache</div>
-          <div className="fc-stat-value">
-            {stats.size} <span className="fc-stat-sub">/ {stats.capacity}</span>
-          </div>
-          <div className="fc-stat-caption">
-            {stats.size >= stats.capacity 
-              ? 'Full (evicts LRU on insert)' 
-              : `${stats.capacity - stats.size} slot${stats.capacity - stats.size === 1 ? '' : 's'} available`}
-          </div>
-        </div>
-
-        <div className="fc-stat-item">
-          <div className="fc-stat-label">Hits</div>
-          <div className="fc-stat-value fc-stat-hits">{stats.hits}</div>
-          <div className="fc-stat-caption">Instant O(1) lookups</div>
-        </div>
-
-        <div className="fc-stat-item">
-          <div className="fc-stat-label">Misses</div>
-          <div className="fc-stat-value fc-stat-misses">{stats.misses}</div>
-          <div className="fc-stat-caption">Not found or TTL expired</div>
-        </div>
-
-        <div className="fc-stat-item">
-          <div className="fc-stat-label">Hit Rate</div>
-          <div className="fc-stat-value fc-stat-rate">{stats.hitRate}</div>
-          <div className="fc-stat-caption">Hit efficiency ratio</div>
-        </div>
-      </div>
-
-      {/* 3. Main Two-Column Layout */}
+      {/* Main Two-Column Layout: CACHE CONTROLS & CACHE STATUS */}
       <div className="fc-grid-two-col">
-        {/* Left Column: Cache Controls */}
+        {/* Left: CACHE CONTROLS */}
         <div className="fc-panel">
           <div className="fc-panel-header">
             <div className="fc-panel-title">
@@ -291,7 +226,6 @@ export default function App() {
                 value={capacity} 
                 onChange={(e) => handleCapacityChange(e.target.value)}
                 className="fc-cap-input"
-                title="Change max cache size"
               />
             </div>
           </div>
@@ -302,7 +236,7 @@ export default function App() {
                 <label className="fc-label">Key</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. user_42" 
+                  placeholder="e.g. user_id" 
                   value={key}
                   onChange={(e) => setKey(e.target.value)}
                   className="fc-input font-mono"
@@ -315,7 +249,7 @@ export default function App() {
                 <label className="fc-label">Value</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. session_token" 
+                  placeholder="e.g. Sasank" 
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   className="fc-input font-mono"
@@ -329,7 +263,7 @@ export default function App() {
                 <input 
                   type="number" 
                   min="1"
-                  placeholder="Optional (e.g. 60)" 
+                  placeholder="Expire after (seconds)" 
                   value={ttl}
                   onChange={(e) => setTtl(e.target.value)}
                   className="fc-input font-mono"
@@ -365,8 +299,7 @@ export default function App() {
                 <button 
                   type="button" 
                   onClick={handleClearExpired}
-                  className="fc-btn fc-btn-subtle"
-                  title="Purge items with elapsed TTL">
+                  className="fc-btn fc-btn-subtle">
                   <Clock size={12} />
                   <span>Remove Expired</span>
                 </button>
@@ -374,16 +307,15 @@ export default function App() {
                 <button 
                   type="button" 
                   onClick={handleClearAll}
-                  className="fc-btn fc-btn-subtle"
-                  title="Flush cache storage">
+                  className="fc-btn fc-btn-subtle">
                   <RotateCcw size={12} />
-                  <span>Clear Cache</span>
+                  <span>Clear All</span>
                 </button>
               </div>
             </div>
           </form>
 
-          {/* Inline Operation Feedback */}
+          {/* Feedback status */}
           {lookupResult && (
             <div className={`fc-status-banner fc-status-${lookupResult.type}`}>
               {getStatusIcon(lookupResult.type)}
@@ -392,90 +324,64 @@ export default function App() {
           )}
         </div>
 
-        {/* Right Column: Engine Specifications & Memory State */}
+        {/* Right: CACHE STATUS (The 4 core metrics) */}
         <div className="fc-panel">
           <div className="fc-panel-header">
             <div className="fc-panel-title">
-              <Activity size={14} className="fc-panel-icon" />
-              <span>Engine Status</span>
+              <span>Cache Status</span>
             </div>
-            <span className="fc-badge-tech" style={{ background: '#ecfdf5', color: '#15803d', borderColor: '#bbf7d0' }}>
-              ONLINE
-            </span>
           </div>
 
-          <div className="fc-specs-body">
-            <div className="fc-spec-row">
-              <span className="fc-spec-name">Memory Slots Utilized</span>
-              <span className="fc-spec-val font-mono">
-                {stats.size} / {stats.capacity} items ({cacheUsagePercent}%)
-              </span>
-            </div>
-
-            {/* Capacity Progress Bar */}
-            <div className="fc-progress-track">
-              <div 
-                className="fc-progress-bar"
-                style={{ 
-                  width: `${cacheUsagePercent}%`,
-                  backgroundColor: stats.size >= stats.capacity ? '#d97706' : '#2563eb'
-                }}
-              />
-            </div>
-
-            <div className="fc-specs-table">
-              <div className="fc-specs-table-row">
-                <span className="fc-spec-dim">Lookup Time Complexity</span>
-                <span className="fc-spec-res font-mono">O(1) Hash Map</span>
+          <div className="fc-status-grid">
+            <div className="fc-status-card">
+              <div className="fc-status-label">Items in Cache</div>
+              <div className="fc-status-value">
+                {stats.size} <span className="fc-stat-sub">/ {stats.capacity}</span>
               </div>
-              <div className="fc-specs-table-row">
-                <span className="fc-spec-dim">Eviction Policy</span>
-                <span className="fc-spec-res font-mono">LRU (Doubly Linked List)</span>
-              </div>
-              <div className="fc-specs-table-row">
-                <span className="fc-spec-dim">Expiration Model</span>
-                <span className="fc-spec-res font-mono">Lazy Check + Manual Purge</span>
-              </div>
-              <div className="fc-specs-table-row">
-                <span className="fc-spec-dim">Current Nodes In Memory</span>
-                <span className="fc-spec-res font-mono">{entries.length} active</span>
+              <div className="fc-status-caption">
+                {stats.size >= stats.capacity ? 'Full (replaces oldest)' : 'Space available'}
               </div>
             </div>
 
-            <div className="fc-seed-section">
-              <span className="fc-seed-label">Quick test data:</span>
-              <div className="fc-seed-btns">
-                <button type="button" onClick={() => loadPreset('user')} className="fc-seed-btn">
-                  + Seed Users
-                </button>
-                <button type="button" onClick={() => loadPreset('session')} className="fc-seed-btn">
-                  + Seed Sessions
-                </button>
-              </div>
+            <div className="fc-status-card">
+              <div className="fc-status-label">Items Found</div>
+              <div className="fc-status-value fc-stat-hits">{stats.hits}</div>
+              <div className="fc-status-caption">Instant O(1) lookups</div>
+            </div>
+
+            <div className="fc-status-card">
+              <div className="fc-status-label">Items Missed</div>
+              <div className="fc-status-value fc-stat-misses">{stats.misses}</div>
+              <div className="fc-status-caption">Not in cache or expired</div>
+            </div>
+
+            <div className="fc-status-card">
+              <div className="fc-status-label">Hit Rate</div>
+              <div className="fc-status-value fc-stat-rate">{stats.hitRate}</div>
+              <div className="fc-status-caption">Success percentage</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 4. Cache Order Visualization (Doubly Linked List Structure) */}
+      {/* Cache Order (Most recently used -> Least recently used) */}
       <div className="fc-panel fc-order-section">
         <div className="fc-order-header">
           <div className="fc-panel-title">
-            <Database size={14} className="fc-panel-icon" />
-            <span>Cache Order (Doubly Linked List)</span>
+            <span>Cache Order</span>
           </div>
 
           <div className="fc-direction-legend">
-            <span>MRU (Head)</span>
+            <span>Most recently used</span>
             <span className="fc-direction-arrow">───────&gt;</span>
-            <span>LRU (Tail: Next Eviction)</span>
+            <span>Least recently used</span>
           </div>
         </div>
 
         <div className="fc-order-body">
           {entries.length === 0 ? (
             <div className="fc-empty-state">
-              Cache is currently empty. Use the controls above to store key-value entries or load test data.
+              Cache is empty. Use the form above to add your first key-value pair.
             </div>
           ) : (
             <div className="fc-nodes-chain">
@@ -486,14 +392,13 @@ export default function App() {
 
                 return (
                   <div key={item.key} className="fc-node-item-wrapper">
-                    {/* Node Data Structure Card */}
                     <div 
                       className={`fc-node-card ${isMRU ? 'fc-node-card-mru' : isLRU && isFull ? 'fc-node-card-lru' : ''}`}
                     >
                       <div className="fc-node-header">
                         <div className="fc-node-tag-group">
                           <span className={`fc-node-role-tag ${isMRU ? 'fc-role-mru' : isLRU ? 'fc-role-lru' : 'fc-role-mid'}`}>
-                            {isMRU ? 'MRU' : isLRU ? 'LRU' : `#${idx + 1}`}
+                            {isMRU ? 'MOST RECENT' : isLRU ? 'OLDEST (LRU)' : `#${idx + 1}`}
                           </span>
                         </div>
 
@@ -502,15 +407,15 @@ export default function App() {
                             type="button"
                             onClick={() => handleGet(item.key)}
                             className="fc-node-btn"
-                            title="Perform GET on this key (promotes to MRU)">
-                            GET
+                            title="Get key">
+                            Get
                           </button>
                           <button 
                             type="button"
                             onClick={() => handleDel(item.key)}
                             className="fc-node-btn fc-node-btn-del"
-                            title="Delete this key">
-                            DEL
+                            title="Delete key">
+                            <Trash2 size={11} />
                           </button>
                         </div>
                       </div>
@@ -531,17 +436,16 @@ export default function App() {
                             <Clock size={11} />
                             {item.isExpired 
                               ? 'Expired' 
-                              : `${item.ttlSeconds}s remaining`}
+                              : `${item.ttlSeconds}s left`}
                           </span>
                         ) : (
                           <span className="fc-ttl-badge fc-ttl-permanent">
-                            No TTL (Persistent)
+                            No expiration
                           </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Connector between Nodes */}
                     {idx < entries.length - 1 && (
                       <div className="fc-connector">
                         <span className="fc-connector-arrow">⇄</span>
@@ -556,7 +460,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* 5. Operation History (Technical Log / Audit Table) */}
+      {/* Operation History */}
       <div className="fc-panel fc-history-panel">
         <div className="fc-panel-header">
           <div className="fc-panel-title">
@@ -564,7 +468,7 @@ export default function App() {
           </div>
 
           <div className="fc-history-header-actions">
-            <span className="fc-log-count">{logs.length} events logged</span>
+            <span className="fc-log-count">{logs.length} logs</span>
             <button 
               type="button"
               onClick={() => setLogs([])}
@@ -579,9 +483,9 @@ export default function App() {
             <thead>
               <tr>
                 <th style={{ width: '90px' }}>Time</th>
-                <th style={{ width: '85px' }}>Operation</th>
+                <th style={{ width: '95px' }}>Operation</th>
                 <th style={{ width: '150px' }}>Key</th>
-                <th>Result / Detail</th>
+                <th>Result</th>
               </tr>
             </thead>
             <tbody>
@@ -596,7 +500,7 @@ export default function App() {
                   <tr key={idx}>
                     <td className="fc-td-time">{log.timestamp}</td>
                     <td className="fc-td-op">
-                      <span className={`fc-op-tag ${getOpBadgeClass(log.status, log.action)}`}>
+                      <span className={`fc-op-tag ${getOpBadgeClass(log.status)}`}>
                         {log.action}
                       </span>
                     </td>
@@ -611,7 +515,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* 6. Footer (Minimal, FastCache copyright only) */}
+      {/* Footer */}
       <footer className="fc-footer">
         FastCache &copy; 2026
       </footer>

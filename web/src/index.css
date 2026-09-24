@@ -33,7 +33,6 @@
   --radius-lg: 8px;
 
   --shadow-subtle: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
 
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -61,9 +60,9 @@ body {
 
 /* App Shell */
 .fc-app {
-  max-width: 1140px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 24px 20px 48px;
+  padding: 24px 20px 44px;
 }
 
 /* Header */
@@ -71,11 +70,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 18px;
+  padding-bottom: 16px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--border-color);
-  flex-wrap: wrap;
-  gap: 12px;
 }
 
 .fc-header-left {
@@ -85,8 +82,8 @@ body {
 }
 
 .fc-logo-mark {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-sm);
   background: #0f172a;
   color: #ffffff;
@@ -134,108 +131,11 @@ body {
   margin-top: 2px;
 }
 
-.fc-header-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.fc-meta-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  background-color: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-subtle);
-}
-
-.fc-meta-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--color-success);
-}
-
-/* Statistics Strip (Replaces AI SaaS cards) */
-.fc-stats-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-subtle);
-}
-
-.fc-stat-item {
-  padding: 14px 18px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.fc-stat-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 14px;
-  bottom: 14px;
-  width: 1px;
-  background-color: var(--border-color);
-}
-
-.fc-stat-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.fc-stat-value {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-}
-
-.fc-stat-sub {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.fc-stat-hits {
-  color: var(--color-success);
-}
-
-.fc-stat-misses {
-  color: var(--color-danger);
-}
-
-.fc-stat-rate {
-  color: var(--color-accent);
-}
-
-.fc-stat-caption {
-  font-size: 11px;
-  color: var(--text-light);
-  margin-top: 4px;
-}
-
-/* Two-Column Grid */
+/* Two-Column Grid: Controls & Status */
 .fc-grid-two-col {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 18px;
   margin-bottom: 20px;
 }
 
@@ -249,14 +149,14 @@ body {
 }
 
 .fc-panel-header {
-  padding: 12px 16px;
+  padding: 11px 16px;
   background-color: var(--bg-muted);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .fc-panel-title {
@@ -309,8 +209,8 @@ body {
 
 .fc-form-grid {
   display: grid;
-  grid-template-columns: 1fr 1.4fr 1.1fr;
-  gap: 12px;
+  grid-template-columns: 1fr 1.3fr 1.1fr;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
@@ -350,14 +250,14 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Button System */
+/* Buttons */
 .fc-actions-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  padding-top: 4px;
+  padding-top: 2px;
 }
 
 .fc-primary-actions {
@@ -432,9 +332,9 @@ body {
   color: var(--text-primary);
 }
 
-/* Inline Feedback / Status Banner */
+/* Inline Feedback */
 .fc-status-banner {
-  margin: 12px 16px 16px;
+  margin: 10px 16px 16px;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
   display: flex;
@@ -462,129 +362,77 @@ body {
   color: var(--color-warning);
 }
 
-.fc-status-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: var(--radius-xs);
-  background-color: currentColor;
-  color: #ffffff;
-}
-
 .fc-status-text {
   font-size: 12px;
   color: var(--text-primary);
 }
 
-/* Right Status / Technical Specs Panel */
-.fc-specs-body {
+/* Cache Status Panel (Right Column) */
+.fc-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
 }
 
-.fc-spec-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-}
-
-.fc-spec-name {
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.fc-spec-val {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.fc-progress-track {
-  width: 100%;
-  height: 6px;
-  background-color: var(--bg-subtle);
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-}
-
-.fc-progress-bar {
-  height: 100%;
-  transition: width 0.25s ease, background-color 0.25s ease;
-}
-
-.fc-specs-table {
+.fc-status-card {
+  background: var(--bg-muted);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  background: var(--bg-muted);
-  overflow: hidden;
-}
-
-.fc-specs-table-row {
+  padding: 12px 14px;
   display: flex;
-  justify-content: space-between;
-  padding: 6px 12px;
+  flex-direction: column;
+}
+
+.fc-status-label {
   font-size: 11px;
-}
-
-.fc-specs-table-row:not(:last-child) {
-  border-bottom: 1px solid var(--border-color);
-}
-
-.fc-spec-dim {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
+  margin-bottom: 4px;
 }
 
-.fc-spec-res {
+.fc-status-value {
+  font-size: 22px;
+  font-weight: 700;
   color: var(--text-primary);
-  font-weight: 500;
-}
-
-.fc-seed-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 4px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.fc-seed-label {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.fc-seed-btns {
-  display: flex;
-  gap: 6px;
-}
-
-.fc-seed-btn {
   font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.fc-stat-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.fc-stat-hits {
+  color: var(--color-success);
+}
+
+.fc-stat-misses {
+  color: var(--color-danger);
+}
+
+.fc-stat-rate {
+  color: var(--color-accent);
+}
+
+.fc-status-caption {
   font-size: 11px;
-  padding: 3px 8px;
-  background-color: var(--bg-panel);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
-  color: var(--text-secondary);
-  cursor: pointer;
+  color: var(--text-light);
+  margin-top: 4px;
 }
 
-.fc-seed-btn:hover {
-  background-color: var(--bg-subtle);
-  color: var(--text-primary);
-}
-
-/* Cache Order Visualization (C++ Doubly Linked List Structure) */
+/* Cache Order Visualization */
 .fc-order-section {
   margin-bottom: 20px;
 }
 
 .fc-order-header {
-  padding: 12px 16px;
+  padding: 11px 16px;
   background-color: var(--bg-muted);
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -609,7 +457,7 @@ body {
 }
 
 .fc-order-body {
-  padding: 18px 16px;
+  padding: 16px;
   background-color: var(--bg-page);
   overflow-x: auto;
 }
@@ -626,9 +474,9 @@ body {
   align-items: center;
 }
 
-/* Structured C++ Node Representation */
+/* Structured Node Data Card */
 .fc-node-card {
-  width: 220px;
+  width: 210px;
   background: var(--bg-panel);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -703,7 +551,7 @@ body {
 .fc-node-btn {
   font-size: 11px;
   font-family: var(--font-mono);
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
   background: var(--bg-panel);
@@ -792,7 +640,7 @@ body {
   color: var(--text-light);
 }
 
-/* Bidirectional Linked List Connectors */
+/* Connectors */
 .fc-connector {
   display: flex;
   flex-direction: column;
@@ -817,7 +665,7 @@ body {
 }
 
 .fc-empty-state {
-  padding: 32px 16px;
+  padding: 30px 16px;
   text-align: center;
   color: var(--text-muted);
   font-size: 13px;
@@ -826,7 +674,7 @@ body {
   background-color: var(--bg-panel);
 }
 
-/* Operation History / Audit Log Table */
+/* Operation History */
 .fc-history-panel {
   margin-bottom: 24px;
 }
@@ -860,7 +708,7 @@ body {
 }
 
 .fc-table-container {
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
   background-color: var(--bg-panel);
 }
@@ -905,7 +753,7 @@ body {
 }
 
 .fc-td-op {
-  width: 85px;
+  width: 95px;
   white-space: nowrap;
 }
 
@@ -970,34 +818,17 @@ body {
 
 /* Footer */
 .fc-footer {
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--border-color);
   text-align: center;
   font-size: 12px;
   color: var(--text-muted);
 }
 
-.fc-footer-brand {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* Responsive Breakpoints */
+/* Responsive */
 @media (max-width: 900px) {
   .fc-grid-two-col {
     grid-template-columns: 1fr;
-  }
-
-  .fc-stats-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .fc-stat-item:nth-child(2)::after {
-    display: none;
-  }
-
-  .fc-stat-item:nth-child(1), .fc-stat-item:nth-child(2) {
-    border-bottom: 1px solid var(--border-color);
   }
 }
 
@@ -1011,16 +842,8 @@ body {
     align-items: flex-start;
   }
 
-  .fc-stats-strip {
+  .fc-status-grid {
     grid-template-columns: 1fr;
-  }
-
-  .fc-stat-item::after {
-    display: none !important;
-  }
-
-  .fc-stat-item:not(:last-child) {
-    border-bottom: 1px solid var(--border-color);
   }
 
   .fc-form-grid {
