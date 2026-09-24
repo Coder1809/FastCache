@@ -1,62 +1,62 @@
-/* Black & White Theme System */
-:root, [data-theme="dark"] {
-  --bg-page: #000000;
-  --bg-panel: #0a0a0a;
-  --bg-subtle: #141414;
-  --bg-muted: #111111;
-  --border-color: #262626;
-  --border-strong: #404040;
-  --text-primary: #ffffff;
-  --text-secondary: #a3a3a3;
-  --text-muted: #737373;
-  --text-light: #525252;
-
-  /* Primary Button (Inverted White on Black) */
-  --btn-primary-bg: #ffffff;
-  --btn-primary-fg: #000000;
-  --btn-primary-hover: #e5e5e5;
-
-  /* Secondary Button */
-  --btn-secondary-bg: #141414;
-  --btn-secondary-fg: #ffffff;
-  --btn-secondary-border: #333333;
-  --btn-secondary-hover: #222222;
-
-  /* Focus and Highlights */
-  --focus-ring: rgba(255, 255, 255, 0.2);
-  --highlight-card: #ffffff;
-
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
-}
-
-[data-theme="light"] {
-  --bg-page: #f4f4f5;
+/* Warm Beige Theme System */
+:root, [data-theme="light"] {
+  --bg-page: #f8f5ee;
   --bg-panel: #ffffff;
-  --bg-subtle: #e4e4e7;
-  --bg-muted: #fafafa;
-  --border-color: #d4d4d8;
-  --border-strong: #71717a;
-  --text-primary: #000000;
-  --text-secondary: #52525b;
-  --text-muted: #71717a;
-  --text-light: #a1a1aa;
+  --bg-subtle: #efe9df;
+  --bg-muted: #f4efe6;
+  --border-color: #e2dacd;
+  --border-strong: #bfb4a3;
+  --text-primary: #241e19;
+  --text-secondary: #5e544a;
+  --text-muted: #807467;
+  --text-light: #a89e91;
 
-  /* Primary Button (Inverted Black on White) */
-  --btn-primary-bg: #000000;
-  --btn-primary-fg: #ffffff;
-  --btn-primary-hover: #27272a;
+  /* Primary Button (Rich Espresso on Cream) */
+  --btn-primary-bg: #2c241d;
+  --btn-primary-fg: #faf7f2;
+  --btn-primary-hover: #42372d;
 
   /* Secondary Button */
   --btn-secondary-bg: #ffffff;
-  --btn-secondary-fg: #000000;
-  --btn-secondary-border: #d4d4d8;
-  --btn-secondary-hover: #f4f4f5;
+  --btn-secondary-fg: #2c241d;
+  --btn-secondary-border: #dcd4c7;
+  --btn-secondary-hover: #f5efe6;
 
   /* Focus and Highlights */
-  --focus-ring: rgba(0, 0, 0, 0.15);
-  --highlight-card: #000000;
+  --focus-ring: rgba(180, 135, 80, 0.25);
+  --highlight-card: #2c241d;
 
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-subtle: 0 1px 3px rgba(60, 45, 30, 0.05), 0 1px 2px rgba(60, 45, 30, 0.03);
+}
+
+[data-theme="dark"] {
+  --bg-page: #161311;
+  --bg-panel: #1f1b18;
+  --bg-subtle: #2b2520;
+  --bg-muted: #231e1b;
+  --border-color: #3d352d;
+  --border-strong: #5e5246;
+  --text-primary: #f7f4ed;
+  --text-secondary: #d4cbbf;
+  --text-muted: #9c9181;
+  --text-light: #6e6456;
+
+  /* Primary Button (Ivory on Dark Espresso) */
+  --btn-primary-bg: #efe9dc;
+  --btn-primary-fg: #1c1713;
+  --btn-primary-hover: #dfd7c8;
+
+  /* Secondary Button */
+  --btn-secondary-bg: #25201c;
+  --btn-secondary-fg: #f7f4ed;
+  --btn-secondary-border: #423930;
+  --btn-secondary-hover: #2f2823;
+
+  /* Focus and Highlights */
+  --focus-ring: rgba(239, 233, 220, 0.2);
+  --highlight-card: #f7f4ed;
+
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 :root {

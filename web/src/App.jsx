@@ -28,14 +28,14 @@ export default function App() {
   const [lookupResult, setLookupResult] = useState(null);
   const logEndRef = useRef(null);
 
-  // Theme state: defaults to dark developer theme, with light theme toggle
+  // Theme state: defaults to bright beige theme, with dark theme toggle
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('fc_theme') || 'dark';
+    return localStorage.getItem('fc_theme_v2') || 'light';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('fc_theme', theme);
+    localStorage.setItem('fc_theme_v2', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -560,7 +560,7 @@ export default function App() {
             <tbody>
               {logs.length === 0 ? (
                 <tr>
-                  <td colSpan={4} style={{ textAlign: 'center', color: '#94a3b8', padding: '24px 0' }}>
+                  <td colSpan={4} style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '24px 0' }}>
                     No operations recorded yet.
                   </td>
                 </tr>
