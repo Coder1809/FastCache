@@ -404,7 +404,7 @@ export default function App() {
           <div className="fc-status-grid">
             <div className="fc-status-card">
               <div className="fc-status-label">Items in Cache</div>
-              <div className={`fc-status-value ${stats.size >= stats.capacity ? 'fc-stat-rate' : 'fc-stat-hits'}`}>
+              <div className="fc-status-value">
                 {stats.size} <span className="fc-stat-sub">/ {stats.capacity}</span>
               </div>
               <div className="fc-status-caption">
@@ -414,19 +414,19 @@ export default function App() {
 
             <div className="fc-status-card">
               <div className="fc-status-label">Items Found</div>
-              <div className="fc-status-value fc-stat-hits">{stats.hits}</div>
+              <div className="fc-status-value">{stats.hits}</div>
               <div className="fc-status-caption">Instant O(1) lookups</div>
             </div>
 
             <div className="fc-status-card">
               <div className="fc-status-label">Items Missed</div>
-              <div className="fc-status-value fc-stat-misses">{stats.misses}</div>
+              <div className="fc-status-value">{stats.misses}</div>
               <div className="fc-status-caption">Not in cache or expired</div>
             </div>
 
             <div className="fc-status-card">
               <div className="fc-status-label">Hit Rate</div>
-              <div className="fc-status-value fc-stat-rate">{stats.hitRate}</div>
+              <div className="fc-status-value">{stats.hitRate}</div>
               <div className="fc-status-caption">Success percentage</div>
             </div>
           </div>
