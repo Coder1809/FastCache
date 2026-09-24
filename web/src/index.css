@@ -1,66 +1,76 @@
-/* Theme System: Dark (Default) & Light */
+/* Theme System: Orange & Light Blue Theme */
 :root, [data-theme="dark"] {
-  --bg-page: #0b0f17;
-  --bg-panel: #131a24;
-  --bg-subtle: #1c2636;
-  --bg-muted: #17202d;
-  --border-color: #243042;
-  --border-strong: #36465d;
-  --text-primary: #e6edf3;
+  --bg-page: #080d16;
+  --bg-panel: #0f1726;
+  --bg-subtle: #172237;
+  --bg-muted: #131c2e;
+  --border-color: #202f47;
+  --border-strong: #33486b;
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   --text-light: #475569;
   
-  --color-accent: #3b82f6;
-  --color-accent-hover: #2563eb;
-  --color-accent-subtle: rgba(59, 130, 246, 0.12);
-  --color-accent-border: #1d4ed8;
+  /* Primary Orange */
+  --color-orange: #f97316;
+  --color-orange-hover: #ea580c;
+  --color-orange-subtle: rgba(249, 115, 22, 0.15);
+  --color-orange-border: rgba(249, 115, 22, 0.45);
+  --color-orange-contrast: #ffffff;
+  
+  /* Secondary Light Blue */
+  --color-lightblue: #38bdf8;
+  --color-lightblue-hover: #0ea5e9;
+  --color-lightblue-subtle: rgba(56, 189, 248, 0.15);
+  --color-lightblue-border: rgba(56, 189, 248, 0.45);
+  --color-lightblue-contrast: #080d16;
   
   --color-success: #22c55e;
-  --color-success-bg: rgba(34, 197, 94, 0.12);
-  --color-success-border: rgba(34, 197, 94, 0.35);
-  
-  --color-warning: #f59e0b;
-  --color-warning-bg: rgba(245, 158, 11, 0.12);
-  --color-warning-border: rgba(245, 158, 11, 0.35);
+  --color-success-bg: rgba(34, 197, 94, 0.14);
+  --color-success-border: rgba(34, 197, 94, 0.4);
   
   --color-danger: #ef4444;
-  --color-danger-bg: rgba(239, 68, 68, 0.12);
-  --color-danger-border: rgba(239, 68, 68, 0.35);
+  --color-danger-bg: rgba(239, 68, 68, 0.14);
+  --color-danger-border: rgba(239, 68, 68, 0.4);
 
-  --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+  --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="light"] {
-  --bg-page: #f0f2f5;
+  --bg-page: #f0f6fc;
   --bg-panel: #ffffff;
-  --bg-subtle: #e5e9ee;
-  --bg-muted: #f6f8fa;
-  --border-color: #d0d7de;
-  --border-strong: #afb8c1;
-  --text-primary: #1f2328;
-  --text-secondary: #57606a;
-  --text-muted: #656d76;
-  --text-light: #8c959f;
+  --bg-subtle: #e2edf8;
+  --bg-muted: #f8fafc;
+  --border-color: #cde0f2;
+  --border-strong: #96bbdc;
+  --text-primary: #0a1120;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
   
-  --color-accent: #0969da;
-  --color-accent-hover: #0856b3;
-  --color-accent-subtle: #ebf5ff;
-  --color-accent-border: #99c8ff;
+  /* Primary Orange */
+  --color-orange: #ea580c;
+  --color-orange-hover: #c2410c;
+  --color-orange-subtle: rgba(234, 88, 12, 0.12);
+  --color-orange-border: rgba(234, 88, 12, 0.4);
+  --color-orange-contrast: #ffffff;
   
-  --color-success: #1a7f37;
-  --color-success-bg: #dafbe1;
-  --color-success-border: #aceebb;
+  /* Secondary Light Blue */
+  --color-lightblue: #0284c7;
+  --color-lightblue-hover: #0369a1;
+  --color-lightblue-subtle: rgba(2, 132, 199, 0.12);
+  --color-lightblue-border: rgba(2, 132, 199, 0.4);
+  --color-lightblue-contrast: #ffffff;
   
-  --color-warning: #9a6700;
-  --color-warning-bg: #fff8c5;
-  --color-warning-border: #f1e05a;
+  --color-success: #16a34a;
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
   
-  --color-danger: #cf222e;
-  --color-danger-bg: #ffebe9;
-  --color-danger-border: #ffc1ba;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fecaca;
 
-  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-subtle: 0 1px 2px 0 rgba(10, 17, 32, 0.06);
 }
 
 :root {
@@ -130,16 +140,17 @@ input[type=number] {
 }
 
 .fc-logo-mark {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-sm);
   background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  color: var(--color-accent);
+  border: 1px solid var(--color-orange-border);
+  color: var(--color-orange);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 0 0 1px var(--color-orange-subtle);
 }
 
 .fc-header-text {
@@ -166,9 +177,9 @@ input[type=number] {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-secondary);
-  background-color: var(--bg-subtle);
-  border: 1px solid var(--border-color);
+  color: var(--color-lightblue);
+  background-color: var(--color-lightblue-subtle);
+  border: 1px solid var(--color-lightblue-border);
   padding: 2px 7px;
   border-radius: var(--radius-xs);
   letter-spacing: 0.02em;
@@ -204,8 +215,8 @@ input[type=number] {
 
 .fc-theme-toggle-btn:hover {
   background-color: var(--bg-subtle);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
+  color: var(--color-lightblue);
+  border-color: var(--color-lightblue-border);
 }
 
 /* Two-Column Grid: Controls & Status */
@@ -247,7 +258,7 @@ input[type=number] {
 }
 
 .fc-panel-icon {
-  color: var(--text-secondary);
+  color: var(--color-lightblue);
 }
 
 /* Capacity Stepper (Number instead of rolldown) */
@@ -284,12 +295,13 @@ input[type=number] {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   user-select: none;
 }
 
 .fc-step-btn:hover:not(:disabled) {
-  background: var(--border-color);
+  background: var(--color-lightblue-subtle);
+  color: var(--color-lightblue);
 }
 
 .fc-step-btn:disabled {
@@ -314,7 +326,8 @@ input[type=number] {
 
 .fc-cap-input:focus {
   outline: none;
-  background: var(--color-accent-subtle);
+  background: var(--color-orange-subtle);
+  color: var(--color-orange);
 }
 
 /* Cache Controls Form */
@@ -351,13 +364,13 @@ input[type=number] {
   border-radius: var(--radius-sm);
   background-color: var(--bg-subtle);
   color: var(--text-primary);
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .fc-input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px var(--color-accent-subtle);
+  border-color: var(--color-orange);
+  box-shadow: 0 0 0 2px var(--color-orange-subtle);
 }
 
 .fc-input::placeholder {
@@ -365,7 +378,7 @@ input[type=number] {
   font-family: var(--font-sans);
 }
 
-/* Buttons */
+/* Action Buttons: Set (Orange), Get (Light Blue) */
 .fc-actions-row {
   display: flex;
   justify-content: space-between;
@@ -392,8 +405,8 @@ input[type=number] {
 .fc-btn {
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 500;
-  padding: 6px 12px;
+  font-weight: 600;
+  padding: 6px 13px;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
@@ -405,25 +418,28 @@ input[type=number] {
   white-space: nowrap;
 }
 
+/* Set Key: Orange */
 .fc-btn-primary {
-  background-color: var(--color-accent);
-  color: #ffffff;
-  border-color: var(--color-accent);
+  background-color: var(--color-orange);
+  color: var(--color-orange-contrast);
+  border-color: var(--color-orange);
 }
 
 .fc-btn-primary:hover {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+  background-color: var(--color-orange-hover);
+  border-color: var(--color-orange-hover);
 }
 
+/* Get Key: Light Blue */
 .fc-btn-secondary {
-  background-color: var(--bg-subtle);
-  color: var(--text-primary);
-  border-color: var(--border-color);
+  background-color: var(--color-lightblue);
+  color: var(--color-lightblue-contrast);
+  border-color: var(--color-lightblue);
 }
 
 .fc-btn-secondary:hover {
-  background-color: var(--border-color);
+  background-color: var(--color-lightblue-hover);
+  border-color: var(--color-lightblue-hover);
 }
 
 .fc-btn-danger {
@@ -445,6 +461,7 @@ input[type=number] {
 .fc-btn-subtle:hover {
   background-color: var(--bg-subtle);
   color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 /* Feedback Status Banner */
@@ -459,10 +476,16 @@ input[type=number] {
   border: 1px solid transparent;
 }
 
-.fc-status-hit, .fc-status-success {
-  background-color: var(--color-success-bg);
-  border-color: var(--color-success-border);
-  color: var(--color-success);
+.fc-status-hit {
+  background-color: var(--color-lightblue-subtle);
+  border-color: var(--color-lightblue-border);
+  color: var(--color-lightblue);
+}
+
+.fc-status-success {
+  background-color: var(--color-orange-subtle);
+  border-color: var(--color-orange-border);
+  color: var(--color-orange);
 }
 
 .fc-status-miss, .fc-status-error {
@@ -472,9 +495,9 @@ input[type=number] {
 }
 
 .fc-status-info, .fc-status-warning {
-  background-color: var(--color-warning-bg);
-  border-color: var(--color-warning-border);
-  color: var(--color-warning);
+  background-color: var(--color-orange-subtle);
+  border-color: var(--color-orange-border);
+  color: var(--color-orange);
 }
 
 .fc-status-text {
@@ -524,7 +547,7 @@ input[type=number] {
 }
 
 .fc-stat-hits {
-  color: var(--color-success);
+  color: var(--color-lightblue);
 }
 
 .fc-stat-misses {
@@ -532,7 +555,7 @@ input[type=number] {
 }
 
 .fc-stat-rate {
-  color: var(--color-accent);
+  color: var(--color-orange);
 }
 
 .fc-status-caption {
@@ -566,8 +589,18 @@ input[type=number] {
   color: var(--text-muted);
 }
 
+.fc-mru-legend-label {
+  color: var(--color-lightblue);
+  font-weight: 600;
+}
+
+.fc-lru-legend-label {
+  color: var(--color-orange);
+  font-weight: 600;
+}
+
 .fc-direction-arrow {
-  color: var(--color-accent);
+  color: var(--text-muted);
   font-weight: 700;
 }
 
@@ -601,21 +634,23 @@ input[type=number] {
   flex-direction: column;
   gap: 8px;
   position: relative;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .fc-node-card:hover {
   border-color: var(--border-strong);
 }
 
+/* MRU: Light Blue Accent */
 .fc-node-card-mru {
-  border-color: var(--color-accent-border);
-  box-shadow: 0 0 0 1px var(--color-accent);
+  border-color: var(--color-lightblue-border);
+  box-shadow: 0 0 0 1px var(--color-lightblue);
 }
 
+/* LRU: Orange Accent */
 .fc-node-card-lru {
-  border-color: var(--color-warning-border);
-  box-shadow: 0 0 0 1px var(--color-warning);
+  border-color: var(--color-orange-border);
+  box-shadow: 0 0 0 1px var(--color-orange);
 }
 
 .fc-node-header {
@@ -643,13 +678,13 @@ input[type=number] {
 }
 
 .fc-role-mru {
-  background-color: var(--color-accent);
-  color: #ffffff;
+  background-color: var(--color-lightblue);
+  color: var(--color-lightblue-contrast);
 }
 
 .fc-role-lru {
-  background-color: var(--color-warning);
-  color: #ffffff;
+  background-color: var(--color-orange);
+  color: var(--color-orange-contrast);
 }
 
 .fc-role-mid {
@@ -676,9 +711,9 @@ input[type=number] {
 }
 
 .fc-node-btn:hover {
-  background: var(--border-color);
-  color: var(--color-accent);
-  border-color: var(--color-accent-border);
+  background: var(--color-lightblue-subtle);
+  color: var(--color-lightblue);
+  border-color: var(--color-lightblue-border);
 }
 
 .fc-node-btn-del:hover {
@@ -742,7 +777,7 @@ input[type=number] {
 }
 
 .fc-ttl-expiring {
-  color: var(--color-warning);
+  color: var(--color-orange);
   font-weight: 600;
 }
 
@@ -769,7 +804,7 @@ input[type=number] {
 }
 
 .fc-connector-arrow {
-  color: var(--text-muted);
+  color: var(--color-lightblue);
   font-size: 13px;
   line-height: 1;
 }
@@ -815,11 +850,13 @@ input[type=number] {
   border-radius: var(--radius-xs);
   color: var(--text-muted);
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .fc-log-clear-btn:hover {
   background: var(--bg-subtle);
   color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 .fc-table-container {
@@ -883,15 +920,15 @@ input[type=number] {
 }
 
 .fc-op-set {
-  background-color: var(--color-accent-subtle);
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent-border);
+  background-color: var(--color-orange-subtle);
+  color: var(--color-orange);
+  border: 1px solid var(--color-orange-border);
 }
 
 .fc-op-hit {
-  background-color: var(--color-success-bg);
-  color: var(--color-success);
-  border: 1px solid var(--color-success-border);
+  background-color: var(--color-lightblue-subtle);
+  color: var(--color-lightblue);
+  border: 1px solid var(--color-lightblue-border);
 }
 
 .fc-op-miss {
@@ -906,10 +943,16 @@ input[type=number] {
   border: 1px solid var(--color-danger-border);
 }
 
-.fc-op-evict, .fc-op-purge {
-  background-color: var(--color-warning-bg);
-  color: var(--color-warning);
-  border: 1px solid var(--color-warning-border);
+.fc-op-evict {
+  background-color: var(--color-orange-subtle);
+  color: var(--color-orange);
+  border: 1px solid var(--color-orange-border);
+}
+
+.fc-op-purge {
+  background-color: var(--color-lightblue-subtle);
+  color: var(--color-lightblue);
+  border: 1px solid var(--color-lightblue-border);
 }
 
 .fc-op-sys, .fc-op-cap {

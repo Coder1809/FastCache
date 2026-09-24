@@ -404,7 +404,7 @@ export default function App() {
           <div className="fc-status-grid">
             <div className="fc-status-card">
               <div className="fc-status-label">Items in Cache</div>
-              <div className="fc-status-value">
+              <div className={`fc-status-value ${stats.size >= stats.capacity ? 'fc-stat-rate' : 'fc-stat-hits'}`}>
                 {stats.size} <span className="fc-stat-sub">/ {stats.capacity}</span>
               </div>
               <div className="fc-status-caption">
@@ -441,9 +441,9 @@ export default function App() {
           </div>
 
           <div className="fc-direction-legend">
-            <span>Most recently used</span>
+            <span className="fc-mru-legend-label">Most recently used (MRU)</span>
             <span className="fc-direction-arrow">───────&gt;</span>
-            <span>Least recently used</span>
+            <span className="fc-lru-legend-label">Least recently used (LRU)</span>
           </div>
         </div>
 
